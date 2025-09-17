@@ -1,0 +1,163 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: $surface-color;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+
+  @include mobile-only {
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+.chat-loading {
+  @include flex-center;
+  height: 400px;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  p {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+  }
+}
+
+.chat-error {
+  @include flex-between;
+  background-color: rgba($error-color, 0.1);
+  border: 1px solid rgba($error-color, 0.2);
+  color: $error-color;
+  padding: $spacing-sm $spacing-md;
+  margin: $spacing-md;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+
+  .retry-btn {
+    @include button-secondary;
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+    color: $error-color;
+    border-color: $error-color;
+
+    &:hover {
+      background-color: rgba($error-color, 0.1);
+    }
+  }
+}
+
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: $spacing-md 0;
+}
+
+.chat-input-container {
+  border-top: 1px solid $border-color;
+  padding: $spacing-md;
+  background-color: $surface-color;
+
+  @include mobile-only {
+    padding: $spacing-sm;
+  }
+}
+
+.chat-actions {
+  @include flex-center;
+  margin-top: $spacing-sm;
+
+  .clear-btn {
+    @include button-secondary;
+    font-size: $font-size-xs;
+    padding: $spacing-xs $spacing-sm;
+    color: $text-secondary;
+
+    &:hover:not(:disabled) {
+      color: $error-color;
+      border-color: $error-color;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Empty state
+.chat-empty {
+  @include flex-center;
+  flex-direction: column;
+  height: 100%;
+  gap: $spacing-lg;
+  padding: $spacing-xl;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 4rem;
+    color: $text-muted;
+    opacity: 0.5;
+  }
+
+  .empty-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+  }
+
+  .empty-subtitle {
+    color: $text-secondary;
+    max-width: 300px;
+    line-height: $line-height-relaxed;
+  }
+
+  .empty-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+
+    .suggestion-btn {
+      @include button-secondary;
+      text-align: left;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-lg;
+      font-size: $font-size-sm;
+
+      &:hover {
+        background-color: $primary-color;
+        color: $text-inverse;
+        border-color: $primary-color;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@include tablet-up {
+  .chat-interface {
+    margin: $spacing-md;
+  }
+}
+
+@include desktop-up {
+  .chat-container {
+    padding: $spacing-lg 0;
+  }
+
+  .chat-input-container {
+    padding: $spacing-lg;
+  }
+}

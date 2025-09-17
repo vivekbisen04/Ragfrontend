@@ -1,0 +1,189 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.message-input-form {
+  width: 100%;
+}
+
+.message-input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  background-color: $surface-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:focus-within {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+}
+
+.message-textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  background: transparent;
+  color: $text-primary;
+  min-height: 20px;
+  max-height: 120px;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Hide scrollbar when not needed
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 2px;
+
+    &:hover {
+      background: $border-hover;
+    }
+  }
+
+  @include mobile-only {
+    font-size: 16px; // Prevent zoom on iOS
+  }
+}
+
+.send-button {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &.enabled {
+    background-color: $primary-color;
+    color: $text-inverse;
+
+    &:hover {
+      background-color: $primary-hover;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &.disabled {
+    background-color: $surface-hover;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-left: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @include mobile-only {
+    width: 36px;
+    height: 36px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.message-input-footer {
+  @include flex-between;
+  margin-top: $spacing-xs;
+  padding: 0 $spacing-xs;
+  font-size: $font-size-xs;
+  color: $text-muted;
+
+  @include mobile-only {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xs;
+  }
+}
+
+.character-count {
+  .warning {
+    color: $warning-color;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.input-hints {
+  .hint {
+    font-size: $font-size-xs;
+
+    kbd {
+      background-color: $surface-hover;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-sm;
+      padding: 2px 4px;
+      font-family: monospace;
+      font-size: 10px;
+    }
+  }
+
+  @include mobile-only {
+    display: none; // Hide keyboard hints on mobile
+  }
+}
+
+// Focus states
+.message-input-container:focus-within {
+  .send-button.enabled {
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+  }
+}
+
+// Error state
+.message-input-form.error {
+  .message-input-container {
+    border-color: $error-color;
+
+    &:focus-within {
+      box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+    }
+  }
+}
+
+// Animation for input expansion
+.message-textarea {
+  transition: height 0.1s ease-out;
+}

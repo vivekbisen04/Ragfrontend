@@ -1,0 +1,218 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.welcome-message {
+  @include flex-center;
+  height: 100%;
+  padding: $spacing-xl;
+
+  @include mobile-only {
+    padding: $spacing-lg $spacing-md;
+  }
+}
+
+.welcome-content {
+  max-width: 600px;
+  text-align: center;
+  @include fade-in(0.6s);
+}
+
+.welcome-icon {
+  margin-bottom: $spacing-lg;
+  color: $primary-color;
+
+  svg {
+    width: 48px;
+    height: 48px;
+
+    @include mobile-only {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.welcome-text {
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+
+    @include mobile-only {
+      font-size: $font-size-xl;
+    }
+  }
+
+  p {
+    font-size: $font-size-base;
+    color: $text-secondary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+
+    @include mobile-only {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.welcome-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+
+  @include tablet-up {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-lg;
+  }
+}
+
+.feature {
+  @include flex-start;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  background-color: rgba($primary-color, 0.05);
+  border-radius: $border-radius-lg;
+  text-align: left;
+
+  @include mobile-only {
+    padding: $spacing-sm;
+  }
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background-color: $primary-color;
+  color: $text-inverse;
+  border-radius: $border-radius-md;
+  @include flex-center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @include mobile-only {
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs / 2;
+
+  strong {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+
+    @include mobile-only {
+      font-size: $font-size-xs;
+    }
+  }
+
+  span {
+    font-size: $font-size-xs;
+    color: $text-secondary;
+    line-height: $line-height-normal;
+
+    @include mobile-only {
+      font-size: 11px;
+    }
+  }
+}
+
+.sample-questions {
+  h3 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+
+    @include mobile-only {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+.questions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-sm;
+
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+  }
+}
+
+.sample-question {
+  @include button-secondary;
+  padding: $spacing-md;
+  text-align: left;
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+  border-radius: $border-radius-lg;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primary-color;
+    color: $text-inverse;
+    border-color: $primary-color;
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.95);
+    box-shadow: $shadow-sm;
+  }
+
+  @include mobile-only {
+    padding: $spacing-sm;
+    font-size: $font-size-xs;
+  }
+}
+
+// Staggered animation for features
+.feature {
+  animation: slideUp 0.6s ease-out;
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+}
+
+// Staggered animation for sample questions
+.sample-question {
+  animation: slideUp 0.6s ease-out;
+
+  &:nth-child(1) { animation-delay: 0.4s; }
+  &:nth-child(2) { animation-delay: 0.5s; }
+  &:nth-child(3) { animation-delay: 0.6s; }
+  &:nth-child(4) { animation-delay: 0.7s; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

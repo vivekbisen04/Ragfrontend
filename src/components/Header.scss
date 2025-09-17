@@ -1,0 +1,119 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.header {
+  background-color: $surface-color;
+  border-bottom: 1px solid $border-color;
+  box-shadow: $shadow-sm;
+  z-index: $z-index-sticky;
+}
+
+.header-content {
+  @include flex-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg $spacing-xl;
+  gap: $spacing-lg;
+  align-items: center;
+
+  @include mobile-only {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: $spacing-md;
+    gap: $spacing-md;
+  }
+}
+
+.back-btn {
+  @include flex-center;
+  padding: $spacing-sm;
+  background: none;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $surface-hover;
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.header-title {
+  h1 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-xs;
+
+    @include mobile-only {
+      font-size: $font-size-xl;
+    }
+  }
+}
+
+.header-subtitle {
+  font-size: $font-size-sm;
+  color: $text-secondary;
+  margin: 0;
+
+  @include mobile-only {
+    font-size: $font-size-xs;
+  }
+
+  .article-context {
+    color: $text-primary;
+
+    strong {
+      color: $primary-color;
+      font-weight: $font-weight-semibold;
+    }
+
+    .article-source {
+      color: $text-secondary;
+      font-style: italic;
+    }
+  }
+}
+
+.header-actions {
+  @include flex-end;
+  gap: $spacing-md;
+
+  @include mobile-only {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+.new-chat-btn {
+  @include button-primary;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  @include mobile-only {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}

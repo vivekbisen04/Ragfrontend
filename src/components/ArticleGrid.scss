@@ -1,0 +1,228 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.article-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-lg;
+
+  @include mobile-only {
+    padding: $spacing-md;
+  }
+}
+
+.article-header {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  p {
+    color: $text-secondary;
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.category-filter {
+  @include flex-center;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+  margin-bottom: $spacing-lg;
+}
+
+.category-btn {
+  padding: $spacing-xs $spacing-md;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  background: $surface-color;
+  color: $text-secondary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+    background: $surface-hover;
+  }
+
+  &.active {
+    background: $primary-color;
+    color: $text-inverse;
+    border-color: $primary-color;
+  }
+}
+
+.articles-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.articles-stats {
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  color: $text-secondary;
+  font-size: $font-size-sm;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: $spacing-lg;
+
+  @include mobile-only {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+}
+
+.article-card {
+  background: $surface-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: $shadow-sm;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+    border-color: $primary-light;
+  }
+}
+
+.article-meta {
+  @include flex-between;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-xs;
+  color: $text-muted;
+
+  .article-source {
+    font-weight: $font-weight-semibold;
+    color: $primary-color;
+  }
+
+  .article-date {
+    color: $text-secondary;
+  }
+}
+
+.article-title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $text-primary;
+  margin-bottom: $spacing-md;
+  line-height: $line-height-tight;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-summary {
+  margin-bottom: $spacing-md;
+
+  p {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    line-height: $line-height-normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.article-category {
+  margin-bottom: $spacing-md;
+
+  .category-tag {
+    display: inline-block;
+    padding: $spacing-xs $spacing-sm;
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    border-radius: $border-radius-md;
+    text-transform: capitalize;
+  }
+}
+
+.article-actions {
+  @include flex-between;
+  gap: $spacing-sm;
+  margin-top: auto;
+
+  .ask-btn {
+    flex: 1;
+    @include button-primary;
+    font-size: $font-size-sm;
+    padding: $spacing-sm $spacing-md;
+  }
+
+  .read-more-btn {
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    color: $text-secondary;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+      background: $surface-hover;
+    }
+  }
+}
+
+.article-loading,
+.article-error {
+  @include flex-center;
+  flex-direction: column;
+  height: 60vh;
+  gap: $spacing-lg;
+
+  p {
+    color: $text-secondary;
+    font-size: $font-size-lg;
+  }
+}
+
+.no-articles {
+  @include flex-center;
+  height: 40vh;
+
+  p {
+    color: $text-secondary;
+    font-size: $font-size-lg;
+  }
+}
+
+.retry-btn {
+  @include button-primary;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid $border-color;
+  border-left: 4px solid $primary-color;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,265 @@
+@import '../styles/variables';
+@import '../styles/mixins';
+
+.message-bubble {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  margin-bottom: $spacing-sm;
+
+  @include mobile-only {
+    max-width: 85%;
+  }
+
+  &.user {
+    align-self: flex-end;
+    align-items: flex-end;
+
+    .message-content {
+      background-color: $user-message-bg;
+      color: $user-message-text;
+      border-radius: $border-radius-lg $border-radius-sm $border-radius-lg $border-radius-lg;
+    }
+
+    .message-metadata {
+      align-items: flex-end;
+      text-align: right;
+    }
+  }
+
+  &.assistant {
+    align-self: flex-start;
+    align-items: flex-start;
+
+    .message-content {
+      background-color: $bot-message-bg;
+      color: $bot-message-text;
+      border-radius: $border-radius-sm $border-radius-lg $border-radius-lg $border-radius-lg;
+      border: 1px solid $bot-message-border;
+    }
+
+    .message-metadata {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  &.error {
+    .message-content {
+      background-color: rgba($error-color, 0.1);
+      border-color: rgba($error-color, 0.3);
+      color: $error-color;
+    }
+  }
+}
+
+.message-content {
+  position: relative;
+  padding: $spacing-sm $spacing-md;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-shadow: $shadow-sm;
+
+  @include mobile-only {
+    padding: $spacing-xs $spacing-sm;
+  }
+}
+
+.message-text {
+  p {
+    margin: 0;
+    line-height: $line-height-relaxed;
+
+    &:not(:last-child) {
+      margin-bottom: $spacing-sm;
+    }
+  }
+
+  // Markdown styles
+  h1, h2, h3, h4, h5, h6 {
+    margin: $spacing-sm 0;
+    font-weight: $font-weight-semibold;
+  }
+
+  h1 { font-size: $font-size-xl; }
+  h2 { font-size: $font-size-lg; }
+  h3 { font-size: $font-size-base; }
+
+  ul, ol {
+    margin: $spacing-sm 0;
+    padding-left: $spacing-lg;
+  }
+
+  li {
+    margin-bottom: $spacing-xs;
+  }
+
+  blockquote {
+    border-left: 4px solid $border-color;
+    padding-left: $spacing-md;
+    margin: $spacing-sm 0;
+    font-style: italic;
+    color: $text-secondary;
+  }
+
+  .inline-code {
+    background-color: rgba($text-primary, 0.1);
+    padding: $spacing-xs / 2 $spacing-xs;
+    border-radius: $border-radius-sm;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+
+  .code-block {
+    background-color: rgba($text-primary, 0.05);
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    padding: $spacing-sm;
+    overflow-x: auto;
+    margin: $spacing-sm 0;
+
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: $font-size-sm;
+    }
+  }
+
+  a {
+    color: $primary-color;
+    text-decoration: underline;
+
+    &:hover {
+      color: $primary-hover;
+    }
+  }
+}
+
+.message-actions {
+  position: absolute;
+  top: $spacing-xs;
+  right: $spacing-xs;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  .message-content:hover & {
+    opacity: 1;
+  }
+}
+
+.copy-btn {
+  @include button-base;
+  padding: $spacing-xs;
+  background-color: rgba($surface-color, 0.9);
+  color: $text-secondary;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-sm;
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    background-color: $surface-color;
+    color: $text-primary;
+  }
+
+  &.copied {
+    color: $success-color;
+    border-color: $success-color;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.message-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  margin-top: $spacing-xs;
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+.message-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.message-time {
+  font-weight: $font-weight-medium;
+}
+
+.rag-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs / 2;
+  padding: $spacing-xs / 2 $spacing-xs;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &.rag-used {
+    background-color: rgba($primary-color, 0.1);
+    color: $primary-color;
+  }
+
+  &.no-rag {
+    background-color: rgba($secondary-color, 0.1);
+    color: $secondary-color;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.processing-time {
+  background-color: rgba($text-muted, 0.1);
+  padding: $spacing-xs / 2 $spacing-xs;
+  border-radius: $border-radius-sm;
+  font-weight: $font-weight-medium;
+}
+
+.model-info {
+  background-color: rgba($text-muted, 0.1);
+  padding: $spacing-xs / 2 $spacing-xs;
+  border-radius: $border-radius-sm;
+  font-weight: $font-weight-medium;
+}
+
+.error-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs / 2;
+  color: $error-color;
+  font-weight: $font-weight-medium;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+// Animation
+.message-bubble {
+  @include slide-up(0.3s);
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .message-bubble {
+    .message-info {
+      gap: $spacing-xs;
+    }
+
+    .rag-indicator,
+    .processing-time,
+    .model-info {
+      font-size: 10px;
+      padding: 2px 4px;
+    }
+  }
+}
