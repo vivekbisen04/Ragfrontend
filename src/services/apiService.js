@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class ApiService {
   constructor() {
-    this.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+    this.baseURL = 'https://ragbackend-io08.onrender.com/api';
     this.client = axios.create({
       baseURL: this.baseURL,
       timeout: 30000, // 30 seconds timeout
