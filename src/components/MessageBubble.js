@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import SourceAttribution from './SourceAttribution.js';
 import './MessageBubble.scss';
 
 const MessageBubble = ({ message, isLastMessage }) => {
@@ -61,6 +62,14 @@ const MessageBubble = ({ message, isLastMessage }) => {
             </ReactMarkdown>
           )}
         </div>
+
+        {/* Add Source Attribution for assistant messages with RAG */}
+        {!isUser && ragUsed && message.metadata?.sources && (
+          <SourceAttribution
+            sources={message.metadata.sources}
+            messageId={message.id}
+          />
+        )}
 
         {!isUser && (
           <div className="message-actions">

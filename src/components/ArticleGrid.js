@@ -116,7 +116,7 @@ const ArticleGrid = ({ onArticleSelect }) => {
           <div className="articles-grid">
             {filteredArticles.map((article, index) => (
               <div
-                key={article.id || index}
+                key={`article-${article.id || article.url || article.title || index}-${index}`}
                 className="article-card"
                 onClick={() => handleArticleClick(article)}
               >
