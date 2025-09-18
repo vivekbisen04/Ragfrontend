@@ -1,5 +1,5 @@
-@import '../styles/variables';
-@import '../styles/mixins';
+@import '../styles/_variables.scss';
+@import '../styles/_mixins.scss';
 
 .article-grid {
   flex: 1;
@@ -15,11 +15,49 @@
   text-align: center;
   margin-bottom: $spacing-xl;
 
-  h2 {
-    font-size: $font-size-2xl;
-    font-weight: $font-weight-bold;
-    color: $text-primary;
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: $spacing-sm;
+
+    @include mobile-only {
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
+
+    h2 {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin: 0;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+
+  .refresh-btn {
+    padding: $spacing-xs $spacing-md;
+    border: 1px solid $primary-color;
+    border-radius: $border-radius-md;
+    background: transparent;
+    color: $primary-color;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover:not(:disabled) {
+      background: $primary-color;
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
 
   p {
@@ -27,6 +65,97 @@
     font-size: $font-size-lg;
     margin-bottom: $spacing-lg;
   }
+}
+
+.article-stats {
+  background: $surface-color;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+
+    @include mobile-only {
+      gap: $spacing-md;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .stat-item {
+    color: $text-secondary;
+    font-size: $font-size-sm;
+
+    strong {
+      color: $text-primary;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+
+.search-section {
+  margin-bottom: $spacing-lg;
+
+  .search-input-container {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+
+    .search-input {
+      width: 100%;
+      padding: $spacing-sm $spacing-md;
+      padding-right: 80px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-lg;
+      font-size: $font-size-base;
+      background: $surface-color;
+      color: $text-primary;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+      }
+
+      &::placeholder {
+        color: $text-secondary;
+      }
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: $text-secondary;
+      cursor: pointer;
+      font-size: $font-size-lg;
+      padding: $spacing-xs;
+
+      &:hover {
+        color: $text-primary;
+      }
+    }
+
+    .search-spinner {
+      position: absolute;
+      right: $spacing-sm;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $primary-color;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
 }
 
 .category-filter {
@@ -66,10 +195,26 @@
 }
 
 .articles-stats {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: $spacing-lg;
+  padding: $spacing-sm $spacing-md;
+  background: rgba($primary-color, 0.05);
+  border-radius: $border-radius-md;
   color: $text-secondary;
   font-size: $font-size-sm;
+
+  @include mobile-only {
+    flex-direction: column;
+    gap: $spacing-xs;
+    text-align: center;
+  }
+
+  .category-filter-active {
+    color: $primary-color;
+    font-weight: $font-weight-medium;
+  }
 }
 
 .articles-grid {
@@ -201,11 +346,27 @@
 
 .no-articles {
   @include flex-center;
+  flex-direction: column;
   height: 40vh;
+  gap: $spacing-md;
 
   p {
     color: $text-secondary;
     font-size: $font-size-lg;
+    text-align: center;
+  }
+
+  .clear-search-link {
+    background: none;
+    border: none;
+    color: $primary-color;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: $font-size-base;
+
+    &:hover {
+      color: darken($primary-color, 10%);
+    }
   }
 }
 

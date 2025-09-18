@@ -7,6 +7,10 @@ const ArticleGrid = ({ onArticleSelect }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [metadata, setMetadata] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
     fetchArticles();
@@ -15,19 +19,69 @@ const ArticleGrid = ({ onArticleSelect }) => {
   const fetchArticles = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await apiService.getArticles();
 
       if (data.success) {
         setArticles(data.data.articles || []);
+        setMetadata(data.data.metadata || null);
+        setLastUpdated(data.data.metadata?.last_updated || new Date().toISOString());
       } else {
         setError('Failed to fetch articles');
       }
     } catch (error) {
       console.error('Error fetching articles:', error);
-      setError('Error loading articles');
+      setError('Error loading articles. Please check if the backend is running.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = async (query) => {
+    if (!query.trim()) {
+      fetchArticles();
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      setError(null);
+      const data = await apiService.searchArticles(query, {
+        category: selectedCategory !== 'all' ? selectedCategory : undefined,
+        limit: 50
+      });
+
+      if (data.success) {
+        setArticles(data.data.articles || []);
+        setMetadata({
+          ...metadata,
+          total_articles: data.data.search_info?.total_results || 0
+        });
+      } else {
+        setError('Search failed');
+      }
+    } catch (error) {
+      console.error('Error searching articles:', error);
+      setError('Search failed. Please try again.');
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearchInputChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    // Debounce search
+    clearTimeout(window.searchTimeout);
+    window.searchTimeout = setTimeout(() => {
+      handleSearch(query);
+    }, 500);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    fetchArticles();
   };
 
   const getUniqueCategories = () => {
@@ -87,8 +141,64 @@ const ArticleGrid = ({ onArticleSelect }) => {
   return (
     <div className="article-grid">
       <div className="article-header">
-        <h2>Browse News Articles</h2>
+        <div className="header-top">
+          <h2>Browse News Articles</h2>
+          <div className="header-actions">
+            <button
+              onClick={fetchArticles}
+              className="refresh-btn"
+              disabled={loading}
+              title="Refresh articles"
+            >
+              {loading ? '⟳' : '↻'} Refresh
+            </button>
+          </div>
+        </div>
+
         <p>Select an article to ask questions about it using our RAG-powered AI</p>
+
+        {metadata && (
+          <div className="article-stats">
+            <div className="stats-row">
+              <span className="stat-item">
+                <strong>{metadata.total_articles}</strong> articles
+              </span>
+              <span className="stat-item">
+                <strong>{metadata.categories?.length || 0}</strong> categories
+              </span>
+              <span className="stat-item">
+                <strong>{metadata.sources?.length || 0}</strong> sources
+              </span>
+              {lastUpdated && (
+                <span className="stat-item">
+                  Updated: {new Date(lastUpdated).toLocaleString()}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="search-section">
+          <div className="search-input-container">
+            <input
+              type="text"
+              placeholder="Search articles by title or content..."
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              className="search-input"
+            />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="clear-search-btn"
+                title="Clear search"
+              >
+                ✕
+              </button>
+            )}
+            {isSearching && <div className="search-spinner">⟳</div>}
+          </div>
+        </div>
 
         <div className="category-filter">
           {getUniqueCategories().map(category => (
@@ -105,12 +215,32 @@ const ArticleGrid = ({ onArticleSelect }) => {
 
       {filteredArticles.length === 0 ? (
         <div className="no-articles">
-          <p>No articles found in this category</p>
+          <p>
+            {searchQuery
+              ? `No articles found matching "${searchQuery}"`
+              : 'No articles found in this category'
+            }
+          </p>
+          {searchQuery && (
+            <button onClick={clearSearch} className="clear-search-link">
+              Clear search to see all articles
+            </button>
+          )}
         </div>
       ) : (
         <div className="articles-container">
           <div className="articles-stats">
-            <span>{filteredArticles.length} articles available</span>
+            <span>
+              {searchQuery
+                ? `${filteredArticles.length} results found`
+                : `${filteredArticles.length} articles available`
+              }
+            </span>
+            {selectedCategory !== 'all' && (
+              <span className="category-filter-active">
+                Filtered by: {selectedCategory.replace('_', ' ')}
+              </span>
+            )}
           </div>
 
           <div className="articles-grid">

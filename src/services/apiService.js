@@ -162,6 +162,31 @@ class ApiService {
   }
 
   /**
+   * Get article statistics
+   */
+  async getArticleStats() {
+    try {
+      const response = await this.client.get('/articles/stats');
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error, 'Failed to fetch article statistics');
+    }
+  }
+
+  /**
+   * Search articles
+   */
+  async searchArticles(query, filters = {}) {
+    try {
+      const params = { q: query, ...filters };
+      const response = await this.client.get('/articles/search', { params });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error, 'Failed to search articles');
+    }
+  }
+
+  /**
    * Check if API is available
    */
   async isApiAvailable() {
