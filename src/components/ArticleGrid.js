@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ArticleGrid.scss';
+import apiService from '../services/apiService.js';
 
 const ArticleGrid = ({ onArticleSelect }) => {
   const [articles, setArticles] = useState([]);
@@ -14,8 +15,7 @@ const ArticleGrid = ({ onArticleSelect }) => {
   const fetchArticles = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/articles');
-      const data = await response.json();
+      const data = await apiService.getArticles();
 
       if (data.success) {
         setArticles(data.data.articles || []);

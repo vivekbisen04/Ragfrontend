@@ -150,6 +150,18 @@ class ApiService {
   }
 
   /**
+   * Get all articles
+   */
+  async getArticles() {
+    try {
+      const response = await this.client.get('/articles');
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error, 'Failed to fetch articles');
+    }
+  }
+
+  /**
    * Check if API is available
    */
   async isApiAvailable() {
